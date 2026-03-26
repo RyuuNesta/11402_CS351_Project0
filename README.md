@@ -1,44 +1,36 @@
-## Two Sum
+# Two Sum (CS351 Project)
 
-Two Sum is a classic LeetCode algorithm problem where you need to find two numbers in an array that add up to a target value. Given an array of integers and a target sum, return the indices of the two numbers that sum to the target.
+This repository implements the Two Sum problem in C++ with two approaches:
+- `twoSumArray` (sorted array with two pointers)
+- `twoSumHashTable` (hash table / unordered_map)
 
-### Requirements
+## Features
+- C++20 implementation (STL vectors, unordered_map)
+- 0-based indices in solution
+- Covers duplicate values, negative numbers, zero values, and edge cases
+- Sample runner in `src/main.cpp`
 
-#### 1. Programming Language
-- **C++ 20** with STL vector
+## Build
+Use a C++20-compliant compiler.
 
-#### 2. Implementations
-Two different approaches are required:
+Example:
 
-##### TwoSumArray
-- Two-pointer approach (requires sorted array)
-- Time Complexity: O(n log n) due to sorting
-- Space Complexity: O(1) or O(n) depending on sorting algorithm
+```
+g++ -std=c++20 -Wall -Wextra -o twosum src/main.cpp src/twosum.cpp
+./twosum
+```
 
-##### TwoSumHashTable
-- Hash map/unordered_map approach
-- Time Complexity: O(n)
-- Space Complexity: O(n)
+## Project Docs
+- `docs/00_intended_use.md` - Intent of the system
+- `docs/01_plan.md` - Project plan
+- `docs/02_SRS.md` - Software requirements specification
+- `docs/03_SDS.md` - Software design specification
+- `docs/04_test_plan.md` - Test plan
+- `docs/05_acceptance_tests.md` - Acceptance criteria and tests
+- `docs/06_traceability.md` - Requirement traceability matrix
+- `docs/07_deploy.md` - Deployment instructions
+- `docs/08_known_issues.md` - Known issues
 
-#### 3. Test Cases
-Comprehensive unit tests covering:
-- Basic cases with valid pairs
-- Cases with duplicate numbers
-- Cases where no pair exists
-- Edge cases (empty array, single element)
-- Multiple valid pairs
-- Negative numbers
-- Zero values
-
-#### 4. Automated Testing
-- **GitHub Actions** CI/CD pipeline for automatic test execution
-- Tests run on every push and pull request
-- Multiple OS environments (Ubuntu, Windows)
-
-#### 5. Docker Support
-- Dockerfile for containerized build and test environment
-- Docker Compose for local development
-- Container should include C++ 20 compiler (g++ or clang)
-- Automated Docker image building in CI/CD pipeline
-
-
+## Testing
+Manual smoke test included in `src/main.cpp`.
+Refer to `docs/04_test_plan.md` for detailed test-cases and expected results.
