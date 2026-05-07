@@ -1,0 +1,42 @@
+name: C++ Two Sum CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build-and-test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Build on Linux
+        if: matrix.os == 'ubuntu-latest'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y g++
+          g++ -std=c++20 -Wall -Wextra src/main.cpp src/twosum.cpp -o twosum_test
+
+      - name: Run tests on Linux
+        if: matrix.os == 'ubuntu-latest'
+        run: ./twosum_test
+
+      - name: Build on Windows
+        if: matrix.os == 'windows-latest'
+        shell: cmd
+        run: |
+          cl /EHsc /std:c++20 src\\main.cpp src\\twosum.cpp /Fe:twosum_test.exe
+
+      - name: Run tests on Windows
+        if: matrix.os == 'windows-latest'
+        shell: cmd
+        run: .\\twosum_test.exe

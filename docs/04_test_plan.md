@@ -106,14 +106,19 @@ Notes: ...
 ### Performance Metrics
 
 #### Array Approach
-- **Complexity**: O(n log n)
-- **Expected**: For n=10,000, should complete in < 1ms
+- **Complexity**: O(n^2)
+- **Expected**: For n=10,000, should complete in a reasonable time for small test sets, but may become slower for much larger arrays
 
 #### Hash Table Approach
-- **Complexity**: O(n)
+- **Complexity**: O(n) average-case
 - **Expected**: For n=10,000, should complete in < 0.5ms
 
-## 5. Edge Cases
+## 5. Continuous Integration
+
+This project uses GitHub Actions to run tests automatically on every push and pull request to `main`.
+The CI workflow is defined in `.github/workflows/ci.yml`.
+
+## 6. Edge Cases
 
 | Case ID | Description | Input | Expected |
 |---------|-------------|-------|----------|

@@ -1,4 +1,4 @@
-#include <iostream>
+﻿#include <iostream>
 #include <vector>
 #include <unordered_map>
 #include <algorithm>
@@ -7,74 +7,104 @@
 std::vector<int> twoSumArray(const std::vector<int>& nums, int target);
 std::vector<int> twoSumHashTable(const std::vector<int>& nums, int target);
 
-// Helper function to print results
-void printResult(const std::string& method, const std::vector<int>& nums, int target, const std::vector<int>& result) {
+struct TestCase {
+    std::string name;
+    std::vector<int> nums;
+    int target;
+    bool expectValidPair;
+};
+
+bool isValidTwoSumResult(const std::vector<int>& nums, int target, const std::vector<int>& result, bool expectValidPair) {
+    if (result.empty()) {
+        return !expectValidPair;
+    }
+
+    if (result.size() != 2) {
+        return false;
+    }
+
+    int i0 = result[0];
+    int i1 = result[1];
+    if (i0 < 0 || i1 < 0 || i0 >= static_cast<int>(nums.size()) || i1 >= static_cast<int>(nums.size())) {
+        return false;
+    }
+
+    if (i0 == i1) {
+        return false;
+    }
+
+    if (nums[i0] + nums[i1] != target) {
+        return false;
+    }
+
+    if (i0 > i1) {
+        return false;
+    }
+
+    return true;
+}
+
+void printResult(const std::string& method, const std::vector<int>& nums, int target, const std::vector<int>& result, bool expectValidPair) {
     std::cout << method << " - Input: [";
-    for (int i = 0; i < nums.size(); ++i) {
+    for (int i = 0; i < static_cast<int>(nums.size()); ++i) {
         std::cout << nums[i];
-        if (i < nums.size() - 1) std::cout << ", ";
+        if (i < static_cast<int>(nums.size()) - 1) std::cout << ", ";
     }
     std::cout << "], Target: " << target << " -> ";
-    
+
     if (result.empty()) {
-        std::cout << "No pair found" << std::endl;
+        std::cout << "No pair found";
     } else {
         std::cout << "[" << result[0] << ", " << result[1] << "]";
-        std::cout << " (values: " << nums[result[0]] << " + " << nums[result[1]] << " = " 
-                  << (nums[result[0]] + nums[result[1]]) << ")" << std::endl;
+        std::cout << " (values: " << nums[result[0]] << " + " << nums[result[1]] << " = "
+                  << (nums[result[0]] + nums[result[1]]) << ")";
     }
+
+    bool passed = isValidTwoSumResult(nums, target, result, expectValidPair);
+    std::cout << " -> " << (passed ? "PASS" : "FAIL") << std::endl;
 }
 
 int main() {
     std::cout << "=== Two Sum Problem - C++20 Implementation ===" << std::endl << std::endl;
-    
-    // Test Case 1: Basic case
-    std::vector<int> nums1 = {2, 7, 11, 15};
-    int target1 = 9;
-    std::cout << "Test 1: Basic case" << std::endl;
-    printResult("  Array Approach", nums1, target1, twoSumArray(nums1, target1));
-    printResult("  Hash Table Approach", nums1, target1, twoSumHashTable(nums1, target1));
-    std::cout << std::endl;
-    
-    // Test Case 2: Negative numbers
-    std::vector<int> nums2 = {-3, 4, 3, 90};
-    int target2 = 0;
-    std::cout << "Test 2: Negative numbers" << std::endl;
-    printResult("  Array Approach", nums2, target2, twoSumArray(nums2, target2));
-    printResult("  Hash Table Approach", nums2, target2, twoSumHashTable(nums2, target2));
-    std::cout << std::endl;
-    
-    // Test Case 3: Duplicate values
-    std::vector<int> nums3 = {3, 3, 4};
-    int target3 = 6;
-    std::cout << "Test 3: Duplicate values" << std::endl;
-    printResult("  Array Approach", nums3, target3, twoSumArray(nums3, target3));
-    printResult("  Hash Table Approach", nums3, target3, twoSumHashTable(nums3, target3));
-    std::cout << std::endl;
-    
-    // Test Case 4: No valid pair
-    std::vector<int> nums4 = {1, 2, 3};
-    int target4 = 10;
-    std::cout << "Test 4: No valid pair" << std::endl;
-    printResult("  Array Approach", nums4, target4, twoSumArray(nums4, target4));
-    printResult("  Hash Table Approach", nums4, target4, twoSumHashTable(nums4, target4));
-    std::cout << std::endl;
-    
-    // Test Case 5: Zero value
-    std::vector<int> nums5 = {-1, 0, 1, 2, -1, -4};
-    int target5 = 0;
-    std::cout << "Test 5: Zero value and negatives" << std::endl;
-    printResult("  Array Approach", nums5, target5, twoSumArray(nums5, target5));
-    printResult("  Hash Table Approach", nums5, target5, twoSumHashTable(nums5, target5));
-    std::cout << std::endl;
-    
-    // Test Case 6: Large numbers
-    std::vector<int> nums6 = {1000000, 2000000, 3000000};
-    int target6 = 3000000;
-    std::cout << "Test 6: Large numbers" << std::endl;
-    printResult("  Array Approach", nums6, target6, twoSumArray(nums6, target6));
-    printResult("  Hash Table Approach", nums6, target6, twoSumHashTable(nums6, target6));
-    std::cout << std::endl;
-    
-    return 0;
+
+    std::vector<TestCase> tests = {
+        {"Basic case", {2, 7, 11, 15}, 9, true},
+        {"Multiple valid pairs", {1, 2, 3, 2}, 4, true},
+        {"Duplicate values", {3, 3}, 6, true},
+        {"Negative numbers", {-3, 4, 3, 90}, 0, true},
+        {"Zero and negative values", {-1, 0, 1, 2, -1, -4}, 0, true},
+        {"Zero pair with duplicates", {0, 0, 4, 5}, 0, true},
+        {"Negative target", {-5, -2, 3, 6}, -7, true},
+        {"All negative numbers", {-5, -4, -3, -2}, -9, true},
+        {"Two-element valid pair", {1, 1}, 2, true},
+        {"Mixed pos/neg zero target", {-5, 5}, 0, true},
+        {"No valid pair", {1, 2, 3}, 7, false},
+        {"Empty array", {}, 5, false},
+        {"Single element", {5}, 5, false},
+        {"Large numbers", {1000000, 2000000, 3000000}, 5000000, true}
+    };
+
+    int passedCount = 0;
+    int totalCount = 0;
+
+    for (const auto& test : tests) {
+        std::cout << "Test: " << test.name << std::endl;
+        auto arrayResult = twoSumArray(test.nums, test.target);
+        auto hashResult = twoSumHashTable(test.nums, test.target);
+
+        printResult("  Array Approach", test.nums, test.target, arrayResult, test.expectValidPair);
+        printResult("  Hash Table Approach", test.nums, test.target, hashResult, test.expectValidPair);
+        std::cout << std::endl;
+
+        if (isValidTwoSumResult(test.nums, test.target, arrayResult, test.expectValidPair)) {
+            ++passedCount;
+        }
+        if (isValidTwoSumResult(test.nums, test.target, hashResult, test.expectValidPair)) {
+            ++passedCount;
+        }
+        totalCount += 2;
+    }
+
+    std::cout << "Summary: " << passedCount << " / " << totalCount << " tests passed" << std::endl;
+    return (passedCount == totalCount ? 0 : 1);
 }

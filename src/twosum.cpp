@@ -1,44 +1,20 @@
 #include <vector>
 #include <unordered_map>
-#include <algorithm>
 
-// Two-pointer approach on sorted array
-// Time: O(n log n) due to sorting
-// Space: O(n) for the index pairs vector
+// Brute-force approach using nested loops
+// Time: O(n^2)
+// Space: O(1)
 std::vector<int> twoSumArray(const std::vector<int>& nums, int target) {
-    int n = nums.size();
-    
-    // Create pairs of (value, original_index)
-    std::vector<std::pair<int, int>> indexed_nums(n);
+    int n = static_cast<int>(nums.size());
+
     for (int i = 0; i < n; ++i) {
-        indexed_nums[i] = {nums[i], i};
-    }
-    
-    // Sort by value
-    std::sort(indexed_nums.begin(), indexed_nums.end());
-    
-    // Two-pointer approach
-    int left = 0, right = n - 1;
-    while (left < right) {
-        int sum = indexed_nums[left].first + indexed_nums[right].first;
-        
-        if (sum == target) {
-            // Return original indices (0-based)
-            std::vector<int> result = {indexed_nums[left].second, indexed_nums[right].second};
-            // Ensure smaller index comes first
-            if (result[0] > result[1]) {
-                std::swap(result[0], result[1]);
+        for (int j = i + 1; j < n; ++j) {
+            if (nums[i] + nums[j] == target) {
+                return {i, j};
             }
-            return result;
-        }
-        else if (sum < target) {
-            ++left;
-        }
-        else {
-            --right;
         }
     }
-    
+
     // No valid pair found
     return {};
 }
@@ -58,7 +34,7 @@ std::vector<int> twoSumHashTable(const std::vector<int>& nums, int target) {
             int first_idx = value_to_index[complement];
             int second_idx = i;
             if (first_idx > second_idx) {
-                std::swap(first_idx, second_idx);
+                return {second_idx, first_idx};
             }
             return {first_idx, second_idx};
         }
