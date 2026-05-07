@@ -28,8 +28,8 @@ The workflow file is located at `.github/workflows/ci.yml`.
 
 ## Windows build steps
 
-- Uses MSVC `cl.exe`.
-- Compiles `src/main.cpp` and `src/twosum.cpp`.
+- Installs MinGW via Chocolatey.
+- Uses GCC `g++` to compile `src/main.cpp` and `src/twosum.cpp`.
 - Runs `twosum_test.exe`.
 
 ## Local testing

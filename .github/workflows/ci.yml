@@ -30,13 +30,21 @@ jobs:
         if: matrix.os == 'ubuntu-latest'
         run: ./twosum_test
 
-      - name: Build on Windows
+      - name: Install MinGW on Windows
         if: matrix.os == 'windows-latest'
-        shell: cmd
+        shell: powershell
         run: |
-          cl /EHsc /std:c++20 src\\main.cpp src\\twosum.cpp /Fe:twosum_test.exe
+          choco install mingw -y
+          refreshenv
+
+      - name: Build on Windows with g++
+        if: matrix.os == 'windows-latest'
+        shell: bash
+        run: |
+          g++ -std=c++20 -Wall -Wextra src/main.cpp src/twosum.cpp -o twosum_test.exe
 
       - name: Run tests on Windows
         if: matrix.os == 'windows-latest'
-        shell: cmd
-        run: .\\twosum_test.exe
+        shell: bash
+        run: |
+          ./twosum_test.exe

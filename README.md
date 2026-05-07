@@ -58,15 +58,10 @@ Comprehensive unit tests covering:
 - Multiple OS environments (Ubuntu, Windows)
 
 #### 6. Run Locally
-- With GCC:
+- With GCC on Linux/macOS/Windows:
   ```bash
   g++ -std=c++20 -Wall -Wextra src/main.cpp src/twosum.cpp -o twosum_test
   ./twosum_test
-  ```
-- With MSVC:
-  ```cmd
-  cl /EHsc /std:c++20 src\main.cpp src\twosum.cpp /Fe:twosum_test.exe
-  twosum_test.exe
   ```
 
 #### 7. Project Documentation
