@@ -1,0 +1,7 @@
+build/
+*.exe
+mingw64/
+mingw64.zip
+compile_error.txt
+compile_output.txt
+help.txt

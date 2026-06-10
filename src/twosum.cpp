@@ -25,7 +25,7 @@ std::vector<int> twoSumArray(const std::vector<int>& nums, int target) {
 std::vector<int> twoSumHashTable(const std::vector<int>& nums, int target) {
     std::unordered_map<int, int> value_to_index;
     
-    for (int i = 0; i < nums.size(); ++i) {
+    for (int i = 0; i < static_cast<int>(nums.size()); ++i) {
         int complement = target - nums[i];
         
         // Check if complement exists in the map
